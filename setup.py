@@ -9,5 +9,5 @@ setup(name='media_moover',
       install_requires=['exifread'],
       entry_points={
           'console_scripts': [
-              'move_photo=media_moover:photo.main',
-              'move_video=media_moover:video.main']})
+              'move_photo=media_moover.photo:main',
+              'move_video=media_moover.video:main']})

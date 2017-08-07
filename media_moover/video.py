@@ -1,0 +1,42 @@
+# -*- coding: utf-8 -*-
+import os
+import media_moover as mm
+from os.path import join, exists, getmtime
+import time
+import subprocess
+
+FFMPEG = 'ffmpeg  -i {0} -vcodec mpeg4 -b 3000k {1}'
+
+def new_file_name(path):
+    lt = time.localtime(getmtime(path))
+    name = "%04i-%02i-%02i_%02i%02i%02i.avi" % (lt.tm_year, lt.tm_mon,
+                                                lt.tm_mday, lt.tm_hour,
+                                                lt.tm_min, lt.tm_sec)
+
+def save_converted(source, name):
+    mm.move_to(source, name, 'converted')
+
+
+def main():
+    try:
+        source, destination, test = mm.parse()
+    except ValueError as e:
+        print(e)
+        quit()
+
+    for avi in mm.file_list(source, 'avi'):
+        path = join(source, avi)
+        year, new_name = new_file_name(path, avi)
+        toName = join(destination, year, new_name)
+        print('{} -> {}'.format(path, toName)
+        if test:
+              continue
+        mm.check_dest_path(destination, year)
+        if res.returncode:
+            print('Ошибка запуса конвертера')
+        else:
+            save_converted(source, avi)
+
+
+if __name__ == '__main__':
+    main()
