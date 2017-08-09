@@ -10,5 +10,6 @@ setup(name='media_moover',
       entry_points={
           'console_scripts': [
               'rotate-video=media_moover.video_rotate:main',
-              'move-photo=media_moover.photo:main',
-              'move-video=media_moover.video:main']})
+              'merge-video=media_moover.video_merge:main',
+              'move-photo=media_moover.photo_move:main',
+              'move-video=media_moover.video_move:main']})
