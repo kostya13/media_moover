@@ -25,13 +25,14 @@ def main():
         quit()
 
     for avi in mm.file_list(source, 'avi'):
-        path = join(source, avi)
+        source_name = join(source, avi)
         year, new_name = new_file_name(path, avi)
-        toName = join(destination, year, new_name)
-        print('{} -> {}'.format(path, toName)
+        dest_name = join(destination, year, new_name)
+        print('{} -> {}'.format(source_name, dest_name))
         if test:
               continue
         mm.check_dest_path(destination, year)
+        res = subprocess.run(FFMPEG.format(source_name, dest_name), shell=True)
         if res.returncode:
             print('Ошибка запуса конвертера')
         else:

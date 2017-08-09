@@ -16,11 +16,11 @@ def parse():
     parser.add_argument('-s',dest='source',
                         help='Источник. Каталог, откуда берутся фотографии',
                         required=False,
-                        default=mm.DEFAULT_SOURCE)
+                        default=DEFAULT_SOURCE)
     parser.add_argument('-d',dest='destination',
                         help='Назначение. Каталог, куда переносятся фотографии',
                         required=False,
-                        default=mm.DEFAULT_DESTANATION)
+                        default=DEFAULT_DESTANATION)
     args=parser.parse_args()
     source = args.source
     destination = args.destination
@@ -51,7 +51,7 @@ def check_dest_path(dest, year):
         os.mkdir(store_dir)
 
 
-def move_to(source, filename, dirname)
+def move_to(source, filename, dirname):
     store_dir = join(source, dirname)
     if not os.path.exists(store_dir):
         os.mkdir(store_dir)
