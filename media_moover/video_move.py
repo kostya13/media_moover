@@ -12,6 +12,7 @@ def new_file_name(path):
     name = "%04i-%02i-%02i_%02i%02i%02i.avi" % (lt.tm_year, lt.tm_mon,
                                                 lt.tm_mday, lt.tm_hour,
                                                 lt.tm_min, lt.tm_sec)
+    return str(lt.tm_year), name
 
 def save_converted(source, name):
     mm.move_to(source, name, 'converted')
@@ -26,7 +27,7 @@ def main():
 
     for avi in mm.file_list(source, 'avi'):
         source_name = join(source, avi)
-        year, new_name = new_file_name(path, avi)
+        year, new_name = new_file_name(source_name)
         dest_name = join(destination, year, new_name)
         print('{} -> {}'.format(source_name, dest_name))
         if test:
