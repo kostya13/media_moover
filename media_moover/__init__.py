@@ -3,8 +3,8 @@ import argparse
 import os
 from os.path import exists
 
-DEFAULT_SOURCE = '/home/kostya/Входящие'
-DEFAULT_DESTANATION = '/home/kostya/Исходящие'
+DEFAULT_SOURCE = '/home/kostya/Изображения/Входящие'
+DEFAULT_DESTANATION = '/home/media/Фото/Детки'
 
 
 def parse():
