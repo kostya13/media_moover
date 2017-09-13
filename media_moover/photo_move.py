@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import os
+import shutil
 import media_moover as mm
-from os.path import join,exists
+from os.path import join
 import exifread
 
 
@@ -15,7 +15,7 @@ def new_file_name(tag):
     time = time.replace(":", "")
     year = date[0:4]
     filename = '{}_{}.jpg'.format(date, time)
-    return  year, filename
+    return year, filename
 
 
 def main():
@@ -45,7 +45,8 @@ def main():
         mm.check_dest_path(destination, year)
         print('{} -> {}'.format(old_path, new_path))
         if not test:
-            os.rename(old_path, new_path)
+            # os.rename(old_path, new_path)
+            shutil.move(old_path, new_path)
 
 
 if __name__ == '__main__':

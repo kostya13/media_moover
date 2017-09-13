@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import argparse
 import os
-from os.path import exists
+import shutil
+from os.path import exists, join
 
 DEFAULT_SOURCE = '/home/kostya/Изображения/Входящие'
 DEFAULT_DESTANATION = '/home/media/Фото/Детки'
@@ -57,5 +58,6 @@ def move_to(source, filename, dirname):
         os.mkdir(store_dir)
     old_name = join(source, filename)
     new_name = join(store_dir, filename)
-    os.rename(old_name, new_name)
-    print('Файл "{}" перемещен'.format(name))
+    # os.rename(old_name, new_name)
+    shutil.move(old_name, new_name)
+    print('Файл "{}" перемещен'.format(filename))
