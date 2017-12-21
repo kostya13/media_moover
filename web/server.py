@@ -129,7 +129,8 @@ def delete_image(image):
 
 
 def file_list():
-    return sorted(os.listdir(os.path.join(BASE_PATH, 'images')))
+    return sorted([i for i in os.listdir(os.path.join(BASE_PATH, 'images'))
+                   if i.lower().endswith('jpg')])
 
 
 def main():
