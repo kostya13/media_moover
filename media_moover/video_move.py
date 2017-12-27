@@ -5,7 +5,7 @@ from os.path import join, exists, getmtime
 import time
 import subprocess
 
-FFMPEG = 'ffmpeg  -i {0} -vcodec mpeg4 -b 3000k {1}'
+FFMPEG = 'ffmpeg  -i {0} -vcodec mpeg4 -acodec mp3 -b:v 3000k -b:a 96k -vf scale=-1:480 {1}'
 
 def new_file_name(path):
     lt = time.localtime(getmtime(path))

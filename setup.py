@@ -9,7 +9,8 @@ setup(name='media_moover',
       install_requires=['exifread'],
       entry_points={
           'console_scripts': [
-              'rotate-video=media_moover.video_rotate:main',
-              'merge-video=media_moover.video_merge:main',
-              'move-photo=media_moover.photo_move:main',
-              'move-video=media_moover.video_move:main']})
+              'video-rotate=media_moover.video_rotate:main',
+              'video-setrotate=media_moover.video_setrotatemeta:main',
+              'video-merge=media_moover.video_merge:main',
+              'video-move=media_moover.video_move:main',
+              'photo-move=media_moover.photo_move:main']})

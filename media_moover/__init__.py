@@ -2,7 +2,10 @@
 import argparse
 import os
 import shutil
-from os.path import exists, join
+from os.path import exists, join, getmtime
+import subprocess
+import time
+import re
 
 DEFAULT_SOURCE = '/home/kostya/Изображения/Входящие'
 DEFAULT_DESTANATION = '/home/media/Фото/Детки'
@@ -41,7 +44,7 @@ def validate_paths(source, destanation):
         raise ValueError("Нужен правильный исходный каталог")
     if not os.path.exists(destanation):
         raise ValueError("Нужен правильный каталог назанчения")
-    if source==destanation:
+    if source == destanation:
         raise ValueError("Пути должны быть различные")
 
 
@@ -61,3 +64,28 @@ def move_to(source, filename, dirname):
     # os.rename(old_name, new_name)
     shutil.move(old_name, new_name)
     print('Файл "{}" перемещен'.format(filename))
+
+
+def meta_from_mtime(path):
+    lt = time.localtime(getmtime(path))
+    return "%04i-%02i-%02i %02i:%02i:%02i" % (lt.tm_year, lt.tm_mon,
+                                              lt.tm_mday, lt.tm_hour,
+                                              lt.tm_min, lt.tm_sec)
+
+
+def video_meta(filename):
+    command = 'ffprobe {}'.format(filename)
+    res = subprocess.run(command, stderr=subprocess.PIPE, shell=True)
+    for line in res.stderr.decode().split('\n'):
+        match = None
+        if 'creation_time' in line:
+            match = re.match('.+creation_time.+: (.+)', line)
+        elif 'date' in line:
+            match = re.match('.+date.+: (.+)', line)
+        if match:
+            break
+    if match:
+        meta = match.group(1)
+    else:
+        meta = meta_from_mtime(filename)
+    return meta
