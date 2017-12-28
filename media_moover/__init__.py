@@ -2,7 +2,7 @@
 import argparse
 import os
 import shutil
-from os.path import exists, join, getmtime
+from os.path import join, getmtime
 import subprocess
 import time
 import re
@@ -14,18 +14,18 @@ DEFAULT_DESTANATION = '/home/media/Фото/Детки'
 def parse():
     parser = argparse.ArgumentParser(
         description='Переименование фотографий, согласно даты, взятой из exif')
-    parser.add_argument('-t',action='store_true',
+    parser.add_argument('-t', action='store_true',
                         help='Тестирование. Показывает, что будет делать,'
                         ' но реально файлы не трогает')
-    parser.add_argument('-s',dest='source',
+    parser.add_argument('-s', dest='source',
                         help='Источник. Каталог, откуда берутся фотографии',
                         required=False,
                         default=DEFAULT_SOURCE)
-    parser.add_argument('-d',dest='destination',
+    parser.add_argument('-d', dest='destination',
                         help='Назначение. Каталог, куда переносятся фотографии',
                         required=False,
                         default=DEFAULT_DESTANATION)
-    args=parser.parse_args()
+    args = parser.parse_args()
     source = args.source
     destination = args.destination
     test = args.t
@@ -63,7 +63,7 @@ def move_to(source, filename, dirname):
     new_name = join(store_dir, filename)
     # os.rename(old_name, new_name)
     shutil.move(old_name, new_name)
-    print('Файл "{}" перемещен'.format(filename))
+    # print('Файл "{}" перемещен'.format(filename))
 
 
 def meta_from_mtime(path):
@@ -89,3 +89,12 @@ def video_meta(filename):
     else:
         meta = meta_from_mtime(filename)
     return meta
+
+
+def name_from_meta(metadata):
+    if 'T' in metadata:
+        name = metadata[:19].replace('T', '_').replace(':', '')
+    else:
+        name = metadata.replace(' ', '_').replace(':', '')
+    year = metadata[:4]
+    return year, name + '.avi'
