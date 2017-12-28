@@ -3,19 +3,32 @@ import shutil
 import media_moover as mm
 from os.path import join
 import exifread
+import re
 
 
 def store_bad_jpeg(source, name):
     mm.move_to(source, name, 'bad_exif')
 
 
-def new_file_name(tag):
+def rename_by_tag(tag):
     date, time = tag.values.split(' ')
     date = date.replace(":", "-")
     time = time.replace(":", "")
     year = date[0:4]
     filename = '{}_{}.jpg'.format(date, time)
     return year, filename
+
+
+def rename_by_filename(filename):
+    match = re.match('IMG_(\d{8})_(\d{6}).*.jpg', filename)
+    if match:
+        date = match.group(1)
+        time = match.group(2)
+        year = date[:4]
+        name = '{}-{}-{}_{}.jpg'.format(date[0:4], date[4:6], date[6:8], time)
+        return year, name
+    else:
+        return None, None
 
 
 def main():
@@ -29,16 +42,20 @@ def main():
         path = join(source, jpeg)
         with open(path, 'rb') as f:
             tags = exifread.process_file(f)
-            date_times = tags.get('Image DateTime')
-            if not date_times:
-                print("Тег времени отсутствует")
-                store_bad_jpeg(source, jpeg)
-                continue
+        date_times = tags.get('Image DateTime')
         try:
-            year, new_name = new_file_name(date_times)
+            if date_times:
+                year, new_name = rename_by_tag(date_times)
+            else:
+                print("Тег времени отсутствует")
+                year, new_name = rename_by_filename(jpeg)
+                if not year:
+                    store_bad_jpeg(source, jpeg)
+                    continue
         except ValueError as e:
             print(e)
             print('Неправильное значение тега: {}'.format(date_times))
+            store_bad_jpeg(source, jpeg)
             continue
         old_path = join(source, jpeg)
         new_path = join(destination, year, new_name)
