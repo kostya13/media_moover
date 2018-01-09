@@ -150,7 +150,7 @@ def main():
         quit(1)
     global base_path
     base_path = source
-    run(host='localhost', port=8080, reloader=True)
+    run(host='0.0.0.0', port=8080, reloader=True)
 
 
 if __name__ == '__main__':
