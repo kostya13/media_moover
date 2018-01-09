@@ -1,0 +1,11 @@
+[Unit]
+Description=Inbox image view server
+After=network.target
+
+[Service]
+User=kostya
+WorkingDirectory=/home/kostya
+ExecStart=/home/kostya/.local/bin/photo-server
+
+[Install]
+WantedBy=multi-user.target
