@@ -6,11 +6,12 @@ setup(name='media_moover',
       author='Konstantin Ilyashenko',
       author_email='kx13@ya.ru',
       packages=['media_moover'],
-      install_requires=['exifread'],
+      install_requires=['exifread', 'bottle', 'bottle-fdsend', 'pillow'],
       entry_points={
           'console_scripts': [
               'video-rotate=media_moover.video_rotate:main',
               'video-setrotate=media_moover.video_setrotatemeta:main',
               'video-merge=media_moover.video_merge:main',
               'video-move=media_moover.video_move:main',
-              'photo-move=media_moover.photo_move:main']})
+              'photo-move=media_moover.photo_move:main',
+              'photo-server=media_moover.server:main']})
