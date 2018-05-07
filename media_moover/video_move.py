@@ -4,12 +4,12 @@ from os.path import join
 import subprocess
 
 
-FFMPEG = 'ffmpeg  -hide_banner -y -i {0} -vcodec mpeg4 -acodec mp3 -b:v 3000k -b:a 96k -vf scale={1} {2}'
+FFMPEG = 'ffmpeg  -hide_banner -y -i "{0}" -vcodec mpeg4 -acodec mp3 -b:v 3000k -b:a 96k -vf scale={1} {2}'
 
 
 def rotation(filename):
     rot = ''
-    res = subprocess.run('ffprobe {}'.format(filename),
+    res = subprocess.run('ffprobe "{}"'.format(filename),
                          stderr=subprocess.PIPE, shell=True)
     if res.returncode:
         print("Ошибка детектора")
@@ -35,6 +35,7 @@ def main():
     for avi in mm.file_list(source, 'avi') + mm.file_list(source, 'mp4'):
         source_name = join(source, avi)
         metadata = mm.video_meta(source_name)
+        print(metadata)
         year, new_name = mm.name_from_meta(metadata)
         dest_name = join(destination, year, new_name)
         print('{} -> {}'.format(source_name, dest_name))

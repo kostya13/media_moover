@@ -74,7 +74,7 @@ def meta_from_mtime(path):
 
 
 def video_meta(filename):
-    command = 'ffprobe {}'.format(filename)
+    command = 'ffprobe "{}"'.format(filename)
     res = subprocess.run(command, stderr=subprocess.PIPE, shell=True)
     for line in res.stderr.decode().split('\n'):
         match = None
