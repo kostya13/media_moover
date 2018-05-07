@@ -35,7 +35,6 @@ def main():
     for avi in mm.file_list(source, 'avi') + mm.file_list(source, 'mp4'):
         source_name = join(source, avi)
         metadata = mm.video_meta(source_name)
-        print(metadata)
         year, new_name = mm.name_from_meta(metadata)
         dest_name = join(destination, year, new_name)
         print('{} -> {}'.format(source_name, dest_name))

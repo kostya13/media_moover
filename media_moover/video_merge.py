@@ -7,7 +7,7 @@ import subprocess
 from media_moover import video_meta
 import re
 
-FFMPEG_COPY = 'ffmpeg -f concat -i {} -metadata {} -codec copy {}'
+FFMPEG_COPY = 'ffmpeg -f concat -i "{}" -metadata {} -codec copy {}'
 FFMPEG_ENCODE = """ffmpeg {inputs} \
 -filter_complex "{streams}concat=n={number}:v=1:a=1[outv][outa]" \
 -map "[outv]" -map "[outa]" -b:v 9000k {outfile}"""
@@ -17,7 +17,7 @@ def media_info(files):
     codecs = []
     resolutions = []
     for f in files:
-        res = subprocess.run('ffprobe {}'.format(f),
+        res = subprocess.run('ffprobe "{}"'.format(f),
                              stderr=subprocess.PIPE, shell=True)
         if res.returncode:
             print("Ошибка детектора")

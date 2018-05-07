@@ -5,7 +5,7 @@ import subprocess
 import os
 from media_moover import video_meta
 
-FFMPEG = 'ffmpeg -i {} -metadata {}  -b:v 9000k -acodec copy -vf "{}" {}'
+FFMPEG = 'ffmpeg -i "{}" -metadata {}  -b:v 9000k -acodec copy -vf "{}" {}'
 
 ROTATE_DIRECTIONS = {'cw': 'transpose=1',
                      'ccw': 'transpose=2',
