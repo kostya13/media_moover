@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import shutil
 import media_moover as mm
+import os
 from os.path import join, getmtime
 import exifread
 import re
@@ -43,7 +44,7 @@ def rename_by_filename(filename):
 
 def rename_by_mtime(path):
     lt = time.localtime(getmtime(path))
-    name = "%04i-%02i-%02i %02i:%02i:%02i" % (lt.tm_year, lt.tm_mon,
+    name = "%04i-%02i-%02i_%02i%02i%02i.jpg" % (lt.tm_year, lt.tm_mon,
                                               lt.tm_mday, lt.tm_hour,
                                               lt.tm_min, lt.tm_sec)
     return str(lt.tm_year), name
