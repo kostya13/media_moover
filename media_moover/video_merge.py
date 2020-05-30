@@ -7,7 +7,7 @@ import subprocess
 from media_moover import video_meta
 import re
 
-FFMPEG_COPY = 'ffmpeg -f concat -i "{}" -metadata {} -codec copy {}'
+FFMPEG_COPY = 'ffmpeg -f concat -safe 0 -i "{}" -metadata {} -codec copy {}'
 FFMPEG_ENCODE = """ffmpeg {inputs} \
 -filter_complex "{streams}concat=n={number}:v=1:a=1[outv][outa]" \
 -map "[outv]" -map "[outa]" -b:v 9000k {outfile}"""
@@ -80,7 +80,7 @@ def main():
         metadata = 'ICRD="{}"'.format(meta)
     ext = args.files[0].split('.')[1]
     name = args.files[0].split('.')[0]
-    out_filename = args.output if args.output else '{}_merged.{}'.format(name,
+    out_filename = args.output if args.output else '"{}_merged.{}"'.format(name,
                                                                          ext)
     if len(set(codecs)) > 1:
         print('Кодеки различны файлы будут пережаты')
