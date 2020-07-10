@@ -4,7 +4,7 @@ from os.path import join
 import subprocess
 
 
-FFMPEG = 'ffmpeg  -hide_banner -y -i "{0}" -vcodec mpeg4 -acodec mp3 -b:v 3000k -b:a 96k -vf scale={1} {2}'
+FFMPEG = 'ffmpeg -hide_banner -y -i "{0}" -vcodec h264 -acodec copy -b:v 3000k  -vf scale={1} {2}'
 
 
 def rotation(filename):

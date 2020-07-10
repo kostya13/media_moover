@@ -75,7 +75,8 @@ def main():
             continue
         old_path = join(source, jpeg)
         new_path = join(destination, year, new_name)
-        mm.check_dest_path(destination, year)
+        if not test:
+            mm.check_dest_path(destination, year, test)
         print('{} -> {}'.format(old_path, new_path))
         if not test:
             # os.rename(old_path, new_path)

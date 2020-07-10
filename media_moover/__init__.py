@@ -2,7 +2,7 @@
 import argparse
 import os
 import shutil
-from os.path import join, getmtime
+from os.path import join, getmtime, basename
 import subprocess
 import time
 import re
@@ -68,9 +68,19 @@ def move_to(source, filename, dirname):
 
 def meta_from_mtime(path):
     lt = time.localtime(getmtime(path))
-    return "%04i-%02i-%02i %02i:%02i:%02i" % (lt.tm_year, lt.tm_mon,
-                                              lt.tm_mday, lt.tm_hour,
-                                              lt.tm_min, lt.tm_sec)
+    return "{}-{}-{} {}:{}:{}".format(lt.tm_year, lt.tm_mon,
+                                      lt.tm_mday, lt.tm_hour,
+                                      lt.tm_min, lt.tm_sec)
+
+
+def meta_from_filename(filename):
+    base = basename(filename)
+    match1 = re.match('VID_(\d{8})_(\d{6}).*', base)
+    if match1:
+        date = match1.group(1)
+        time = match1.group(2)
+        return "{}-{}-{} {}:{}:{}".format(date[0:4], date[4:6], date[6:8],
+                                          time[0:2], time[2:4], time[4:6])
 
 
 def video_meta(filename):
@@ -87,7 +97,9 @@ def video_meta(filename):
     if match:
         meta = match.group(1)
     else:
-        meta = meta_from_mtime(filename)
+        meta = meta_from_filename(filename)
+        if not meta:
+            meta = meta_from_mtime(filename)
     return meta
 
 
@@ -97,4 +109,4 @@ def name_from_meta(metadata):
     else:
         name = metadata.replace(' ', '_').replace(':', '')
     year = metadata[:4]
-    return year, name + '.avi'
+    return year, name + '.mp4'
