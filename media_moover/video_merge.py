@@ -103,7 +103,10 @@ def main():
                         help='Файл для сохранения')
     parser.add_argument('files', nargs='+',
                         help='Исходные файлы')
+    parser.add_argument('-b', action='store_true',
+                        help='Не создавать backup файлы')
     args = parser.parse_args()
+    nobackup = args.b
     for f in args.files:
         if not exists(f):
             print('Исходный файл не найден: {}'.format(f))
@@ -139,8 +142,9 @@ def main():
         different_codecs(metadata, out_filename, files)
     else:
         same_codec(metadata, out_filename, files)
-    for f in args.files:
-        os.rename(f, f + '.backup')
+    if not nobackup:
+        for f in args.files:
+            os.rename(f, f + '.backup')
     subprocess.run('rm -f *-blank.mp4 *-overlay.mp4', shell=True)
 
 
