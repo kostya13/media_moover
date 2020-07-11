@@ -71,11 +71,6 @@ def different_codecs(metadata, out_filename, files):
 def overlay(blank_filename, resolutions, rotation, filename, max_size):
     x, y = [int(i) for i in resolutions.split('x')]
     out_name = '{}-overlay.mp4'.format(filename)
-    transponse = ''
-    if rotation == '90':
-        transponse = ',transpose=1'
-    elif rotation == '180':
-        transpose = ',transpose=1,transpose=1'
     dx = (max_size // 2) - (x // 2)
     dy = (max_size // 2) - (y // 2)
     if rotation == '90':
@@ -108,8 +103,11 @@ def main():
                         help='Исходные файлы')
     parser.add_argument('-b', action='store_true',
                         help='Не создавать backup файлы')
+    parser.add_argument('-f', action='store_true',
+                        help='Объединить файлы разного размера')
     args = parser.parse_args()
     nobackup = args.b
+    force_overlay = args.f
     for f in args.files:
         if not exists(f):
             print('Исходный файл не найден: {}'.format(f))
@@ -120,7 +118,7 @@ def main():
     for r in resolutions:
         sizes.extend([int(i) for i in r.split('x')])
     max_size = max(sizes)
-    need_overlay = len(set(rotations)) > 1
+    need_overlay = len(set(rotations)) > 1 or force_overlay
     for fi in range(len(files)):
         if need_overlay:
             new_name = blank_video(durations[fi], files[fi], max_size)
