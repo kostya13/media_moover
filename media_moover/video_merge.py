@@ -71,14 +71,17 @@ def different_codecs(metadata, out_filename, files):
 def overlay(blank_filename, resolutions, rotation, filename, max_size):
     x, y = [int(i) for i in resolutions.split('x')]
     out_name = '{}-overlay.mp4'.format(filename)
-    transponse = ',transpose=1' if rotation == '90' else ''
+    transponse = ''
+    if rotation == '90':
+        transponse = ',transpose=1'
+    elif rotation == '180':
+        transpose = ',transpose=1,transpose=1'
     dx = (max_size // 2) - (x // 2)
     dy = (max_size // 2) - (y // 2)
     if rotation == '90':
         dx, dy = dy, dx
-    res = subprocess.run('ffmpeg -hide_banner -y -i {} -vf "movie={}{} [a]; [in][a] overlay={}:{}" {}'.
-                         format(blank_filename, filename, transponse, dx, dy,
-                                out_name), shell=True)
+    res = subprocess.run('ffmpeg -y  -i {} -i {}  -filter_complex "overlay={}:{}" -map 1:a -c:a copy {}'.
+                         format(blank_filename, filename, dx, dy, out_name), shell=True)
     if res.returncode:
         print('Ошибка запуса конвертера')
         quit(1)
